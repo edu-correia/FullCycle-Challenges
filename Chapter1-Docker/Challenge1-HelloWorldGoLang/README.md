@@ -8,7 +8,7 @@ Publish a Docker image on Docker Hub. When running this image, its output should
 \
 Rules:
 - You should use Go Lang to print the message
-- The Docker image must be a maximum of 2MB in size
+- You should optimize your Docker image to a maximum of 2MB in size
 
 <br>
 
