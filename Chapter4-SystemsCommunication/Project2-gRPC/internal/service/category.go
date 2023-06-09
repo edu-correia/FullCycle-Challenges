@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"io"
 
 	"github.com/edu-correia/grpc/internal/database"
 	"github.com/edu-correia/grpc/internal/pb"
