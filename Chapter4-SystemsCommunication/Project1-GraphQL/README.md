@@ -10,12 +10,19 @@ Simple project in GoLang learning how to use GraphQL and it benefits. This proje
 
 ## :arrow_forward: How to run it:
 First, create your categories table inside ./data.db:\
-`CREATE TABLE categories(id STRING, name STRING, description STRING);`
+```sql
+CREATE TABLE categories(
+    id STRING,
+    name STRING,
+    description STRING
+);
+```
+
 
 After that, type the following command to start the server:\
 `go run cmd/server/server.go`
 
-Then, run your queries and mutations at [localhost:8080](localhost:8080):\
+Then, run your queries and mutations at [localhost:8080](localhost:8080):
 
 ```graphql
 mutation createCategory {
@@ -28,7 +35,8 @@ mutation createCategory {
     description
   }
 }
- query queryCategories {
+
+query queryCategories {
   categories {
     id
     name
