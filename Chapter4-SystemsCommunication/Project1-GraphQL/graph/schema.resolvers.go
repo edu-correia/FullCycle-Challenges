@@ -6,7 +6,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/edu-correia/graphql/graph/model"
 )
@@ -24,11 +23,6 @@ func (r *mutationResolver) CreateCategory(ctx context.Context, input model.NewCa
 	}, nil
 }
 
-// CreateCourse is the resolver for the createCourse field.
-func (r *mutationResolver) CreateCourse(ctx context.Context, input model.NewCourse) (*model.Course, error) {
-	panic(fmt.Errorf("not implemented: CreateCourse - createCourse"))
-}
-
 // Categories is the resolver for the categories field.
 func (r *queryResolver) Categories(ctx context.Context) ([]*model.Category, error) {
 	categories, err := r.CategoryDB.FindAll()
@@ -44,11 +38,6 @@ func (r *queryResolver) Categories(ctx context.Context) ([]*model.Category, erro
 		})
 	}
 	return categoriesModel, nil
-}
-
-// Courses is the resolver for the courses field.
-func (r *queryResolver) Courses(ctx context.Context) ([]*model.Course, error) {
-	panic(fmt.Errorf("not implemented: Courses - courses"))
 }
 
 // Mutation returns MutationResolver implementation.
