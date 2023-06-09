@@ -8,18 +8,18 @@ type Category {
 type Course {
   id: ID!
   name: String!
-  descripion: String
+  description: String
   category: Category!
 }
 
 input NewCategory {
   name: String!
-  descripion: String
+  description: String
 }
 
 input NewCourse {
   name: String!
-  descripion: String
+  description: String
   categoryId: ID!
 }
 

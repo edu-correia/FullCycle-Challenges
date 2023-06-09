@@ -53,10 +53,10 @@ type ComplexityRoot struct {
 	}
 
 	Course struct {
-		Category   func(childComplexity int) int
-		Descripion func(childComplexity int) int
-		ID         func(childComplexity int) int
-		Name       func(childComplexity int) int
+		Category    func(childComplexity int) int
+		Description func(childComplexity int) int
+		ID          func(childComplexity int) int
+		Name        func(childComplexity int) int
 	}
 
 	Mutation struct {
@@ -129,12 +129,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Course.Category(childComplexity), true
 
-	case "Course.descripion":
-		if e.complexity.Course.Descripion == nil {
+	case "Course.description":
+		if e.complexity.Course.Description == nil {
 			break
 		}
 
-		return e.complexity.Course.Descripion(childComplexity), true
+		return e.complexity.Course.Description(childComplexity), true
 
 	case "Course.id":
 		if e.complexity.Course.ID == nil {
@@ -569,8 +569,8 @@ func (ec *executionContext) fieldContext_Category_courses(ctx context.Context, f
 				return ec.fieldContext_Course_id(ctx, field)
 			case "name":
 				return ec.fieldContext_Course_name(ctx, field)
-			case "descripion":
-				return ec.fieldContext_Course_descripion(ctx, field)
+			case "description":
+				return ec.fieldContext_Course_description(ctx, field)
 			case "category":
 				return ec.fieldContext_Course_category(ctx, field)
 			}
@@ -668,8 +668,8 @@ func (ec *executionContext) fieldContext_Course_name(ctx context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Course_descripion(ctx context.Context, field graphql.CollectedField, obj *model.Course) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Course_descripion(ctx, field)
+func (ec *executionContext) _Course_description(ctx context.Context, field graphql.CollectedField, obj *model.Course) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Course_description(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -682,7 +682,7 @@ func (ec *executionContext) _Course_descripion(ctx context.Context, field graphq
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Descripion, nil
+		return obj.Description, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -696,7 +696,7 @@ func (ec *executionContext) _Course_descripion(ctx context.Context, field graphq
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Course_descripion(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Course_description(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Course",
 		Field:      field,
@@ -871,8 +871,8 @@ func (ec *executionContext) fieldContext_Mutation_createCourse(ctx context.Conte
 				return ec.fieldContext_Course_id(ctx, field)
 			case "name":
 				return ec.fieldContext_Course_name(ctx, field)
-			case "descripion":
-				return ec.fieldContext_Course_descripion(ctx, field)
+			case "description":
+				return ec.fieldContext_Course_description(ctx, field)
 			case "category":
 				return ec.fieldContext_Course_category(ctx, field)
 			}
@@ -990,8 +990,8 @@ func (ec *executionContext) fieldContext_Query_courses(ctx context.Context, fiel
 				return ec.fieldContext_Course_id(ctx, field)
 			case "name":
 				return ec.fieldContext_Course_name(ctx, field)
-			case "descripion":
-				return ec.fieldContext_Course_descripion(ctx, field)
+			case "description":
+				return ec.fieldContext_Course_description(ctx, field)
 			case "category":
 				return ec.fieldContext_Course_category(ctx, field)
 			}
@@ -2910,7 +2910,7 @@ func (ec *executionContext) unmarshalInputNewCategory(ctx context.Context, obj i
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "descripion"}
+	fieldsInOrder := [...]string{"name", "description"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -2926,15 +2926,15 @@ func (ec *executionContext) unmarshalInputNewCategory(ctx context.Context, obj i
 				return it, err
 			}
 			it.Name = data
-		case "descripion":
+		case "description":
 			var err error
 
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descripion"))
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Descripion = data
+			it.Description = data
 		}
 	}
 
@@ -2948,7 +2948,7 @@ func (ec *executionContext) unmarshalInputNewCourse(ctx context.Context, obj int
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "descripion", "categoryId"}
+	fieldsInOrder := [...]string{"name", "description", "categoryId"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -2964,15 +2964,15 @@ func (ec *executionContext) unmarshalInputNewCourse(ctx context.Context, obj int
 				return it, err
 			}
 			it.Name = data
-		case "descripion":
+		case "description":
 			var err error
 
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descripion"))
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Descripion = data
+			it.Description = data
 		case "categoryId":
 			var err error
 
@@ -3068,8 +3068,8 @@ func (ec *executionContext) _Course(ctx context.Context, sel ast.SelectionSet, o
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "descripion":
-			out.Values[i] = ec._Course_descripion(ctx, field, obj)
+		case "description":
+			out.Values[i] = ec._Course_description(ctx, field, obj)
 		case "category":
 			out.Values[i] = ec._Course_category(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
