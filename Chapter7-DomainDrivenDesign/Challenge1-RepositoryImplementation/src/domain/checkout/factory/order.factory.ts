@@ -1,7 +1,7 @@
 import Order from "../entity/order";
 import OrderItem from "../entity/order_item";
 
-interface OrderFactoryProps {
+export interface OrderFactoryProps {
   id: string;
   customerId: string;
   items: {
