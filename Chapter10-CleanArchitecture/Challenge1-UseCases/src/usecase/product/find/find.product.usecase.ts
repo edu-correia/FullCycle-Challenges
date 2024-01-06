@@ -9,6 +9,8 @@ export default class FindProductUseCase {
     }
 
     async execute(input: InputFindProductDto): Promise<OutputFindProductDto> {
+        if (input.id == undefined || input.id == "") throw new Error("Missing id");
+
         const product = await this.productRepository.find(input.id);
 
         return {
