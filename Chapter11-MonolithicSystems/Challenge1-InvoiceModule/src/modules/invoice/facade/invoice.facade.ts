@@ -1,8 +1,10 @@
 import UseCaseInterface from "../../@shared/usecase/use-case.interface";
+
 import InvoiceFacadeInterface, {
   GenerateInvoiceFacadeInputDto,
   FindInvoiceFacadeInputDto,
   FindInvoiceFacadeOutputDto,
+  GenerateInvoiceFacadeOutputDto,
 } from "./invoice.facade.interface";
 
 export interface UseCaseProps {
@@ -19,8 +21,8 @@ export default class InvoiceFacade implements InvoiceFacadeInterface {
     this._generateUsecase = usecaseProps.generateUsecase;
   }
 
-  async generate(input: GenerateInvoiceFacadeInputDto): Promise<void> {
-    await this._generateUsecase.execute(input);
+  async generate(input: GenerateInvoiceFacadeInputDto): Promise<GenerateInvoiceFacadeOutputDto> {
+    return await this._generateUsecase.execute(input);
   }
 
   async find(

@@ -1,5 +1,5 @@
 import { BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
-import Invoice from "../domain/invoice.entity";
+import { InvoiceModel } from "./invoice.model";
 
 @Table({
   tableName: 'invoice_item',
@@ -22,10 +22,10 @@ export class InvoiceItemModel extends Model {
   @Column({ allowNull: false })
   updatedAt: Date;
 
-  @ForeignKey(() => InvoiceItemModel)
-  @Column
+  @ForeignKey(() => InvoiceModel)
+  @Column({ allowNull: false })
   invoiceId: string;
 
-  @BelongsTo(() => InvoiceItemModel)
-  invoice: Invoice;
+  @BelongsTo(() => InvoiceModel)
+  invoice: InvoiceModel;
 }

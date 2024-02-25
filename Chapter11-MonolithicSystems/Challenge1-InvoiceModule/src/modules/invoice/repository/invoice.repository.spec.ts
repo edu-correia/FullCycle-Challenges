@@ -34,7 +34,7 @@ describe("Invoice Repository test", () => {
     ]
 
     const invoice = new Invoice({
-      id: new Id("1"),
+      id: new Id("123"),
       name: "Invoice 1",
       document: "1234-5678",
       items,
@@ -51,7 +51,10 @@ describe("Invoice Repository test", () => {
     const repository = new InvoiceRepository()
     await repository.save(invoice);
 
-    const clientDb = await InvoiceModel.findOne({ where: { id: "1" } })
+    const clientDb = await InvoiceModel.findOne({
+      where: { id: invoice.id.id },
+      include: [InvoiceModel.associations.invoiceItems],
+    });
 
     expect(clientDb).toBeDefined()
     expect(clientDb.id).toEqual(invoice.id.id)
@@ -65,22 +68,19 @@ describe("Invoice Repository test", () => {
     expect(clientDb.zipcode).toEqual(invoice.address.zipCode)
     expect(clientDb.createdAt).toStrictEqual(invoice.createdAt)
     expect(clientDb.updatedAt).toStrictEqual(invoice.updatedAt)
-
-    const itemsDb = await InvoiceItemModel.findAll({ where: { invoiceId: invoice.id.id } });
-
-    expect(itemsDb).toBeDefined()
-    expect(itemsDb.length).toEqual(2)
-    expect(itemsDb[0].id).toEqual(items[0].id.id)
-    expect(itemsDb[0].name).toEqual(items[0].name)
-    expect(itemsDb[0].price).toEqual(items[0].price)
-    expect(itemsDb[1].id).toEqual(items[1].id.id)
-    expect(itemsDb[1].name).toEqual(items[1].name)
-    expect(itemsDb[1].price).toEqual(items[1].price)
+    expect(clientDb.invoiceItems).toBeDefined()
+    expect(clientDb.invoiceItems.length).toEqual(2)
+    expect(clientDb.invoiceItems[0].id).toEqual(items[0].id.id)
+    expect(clientDb.invoiceItems[0].name).toEqual(items[0].name)
+    expect(clientDb.invoiceItems[0].price).toEqual(items[0].price)
+    expect(clientDb.invoiceItems[1].id).toEqual(items[1].id.id)
+    expect(clientDb.invoiceItems[1].name).toEqual(items[1].name)
+    expect(clientDb.invoiceItems[1].price).toEqual(items[1].price)
   })
 
   it("should find an invoice", async () => {
     const inputInvoice = {
-      id: "1",
+      id: "123",
       name: "Invoice 1",
       document: "1234-5678",
       street: "Rua 123",
@@ -91,30 +91,28 @@ describe("Invoice Repository test", () => {
       zipcode: "12345-000",
       createdAt: new Date(),
       updatedAt: new Date(),
+      invoiceItems: [
+        {
+          id: "1",
+          name: "Item 1",
+          price: 12.95,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: "2",
+          name: "Item 2",
+          price: 20.50,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }
+      ]
     };
 
-    const invoice = await InvoiceModel.create(inputInvoice);
-
-    const inputItems = [
-      {
-        id: "1",
-        name: "Item 1",
-        price: 12.95,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        invoiceId: invoice.id
-      },
-      {
-        id: "2",
-        name: "Item 2",
-        price: 20.50,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        invoiceId: invoice.id
-      }
-    ]
-
-    const items = await InvoiceItemModel.bulkCreate(inputItems);
+    const invoice = await InvoiceModel.create(
+      inputInvoice,
+      {include: [InvoiceModel.associations.invoiceItems]}
+    );
 
     const repository = new InvoiceRepository();
     const result = await repository.find(invoice.id);
@@ -129,11 +127,11 @@ describe("Invoice Repository test", () => {
     expect(result.address.zipCode).toEqual(invoice.zipcode)
     expect(result.items).toBeDefined()
     expect(result.items.length).toEqual(2)
-    expect(result.items[0].id.id).toEqual(items[0].id)
-    expect(result.items[0].name).toEqual(items[0].name)
-    expect(result.items[0].price).toEqual(items[0].price)
-    expect(result.items[1].id.id).toEqual(items[1].id)
-    expect(result.items[1].name).toEqual(items[1].name)
-    expect(result.items[1].price).toEqual(items[1].price)
+    expect(result.items[0].id.id).toEqual(invoice.invoiceItems[0].id)
+    expect(result.items[0].name).toEqual(invoice.invoiceItems[0].name)
+    expect(result.items[0].price).toEqual(invoice.invoiceItems[0].price)
+    expect(result.items[1].id.id).toEqual(invoice.invoiceItems[1].id)
+    expect(result.items[1].name).toEqual(invoice.invoiceItems[1].name)
+    expect(result.items[1].price).toEqual(invoice.invoiceItems[1].price)
   })
 })

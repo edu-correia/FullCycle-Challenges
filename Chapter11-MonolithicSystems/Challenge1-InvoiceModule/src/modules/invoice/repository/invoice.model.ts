@@ -40,6 +40,6 @@ export class InvoiceModel extends Model {
   @Column({ allowNull: false })
   updatedAt: Date;
 
-  @HasMany(() => InvoiceItemModel, { foreignKey: 'invoiceId' })
+  @HasMany(() => InvoiceItemModel)
   invoiceItems: InvoiceItemModel[];
 }
