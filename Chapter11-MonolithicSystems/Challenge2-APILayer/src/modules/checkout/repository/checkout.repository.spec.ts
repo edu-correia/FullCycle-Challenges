@@ -36,58 +36,89 @@ describe("CheckoutRepository test", () => {
   });
 
   it("should add an order", async () => {
-    const OrderProps = {
-      id: new Id("O-1"),
-      client: new Client({
-        id: new Id("C-1"),
-        name: "client name",
-        email: "test@domain.com",
-        document: "0000000",
-        street: "16 avenus",
-        number: "123",
-        complement: "Ap 400",
-        city: "My city",
-        state: "State",
-        zipCode: "89777310",
+    const client = new Client({
+      id: new Id("C-1"),
+      name: "client name",
+      email: "test@domain.com",
+      document: "0000000",
+      street: "16 avenus",
+      number: "123",
+      complement: "Ap 400",
+      city: "My city",
+      state: "State",
+      zipCode: "89777310",
+    });
+
+    await ClientModel.create({
+      id: client.id.id,
+      name: client.name,
+      email: client.email,
+      document: client.document,
+      street: client.street,
+      number: client.number,
+      complement: client.complement,
+      city: client.city,
+      state: client.state,
+      zipCode: client.zipCode,
+      createdAt: client.createdAt,
+      updatedAt: client.updatedAt
+    })
+
+    const products = [
+      new Product({
+        id: new Id("P-1"),
+        name: "first product",
+        description: "first product description",
+        salesPrice: 10,
       }),
-      products: [
-        new Product({
-          id: new Id("P-1"),
-          name: "first product",
-          description: "first product description",
-          salesPrice: 10,
-        }),
-        new Product({
-          id: new Id("P-2"),
-          name: "second product",
-          description: "second product description",
-          salesPrice: 20,
-        }),
-      ],
+      new Product({
+        id: new Id("P-2"),
+        name: "second product",
+        description: "second product description",
+        salesPrice: 20,
+      })
+    ];
+
+    const orderProps = {
+      id: new Id("O-1"),
+      client: client,
+      products: products,
       status: "status 1",
     };
 
-    const order = new Order(OrderProps);
+    await ProductModel.bulkCreate(
+      products.map(product => ({
+        id: product.id.id,
+        name: product.name,
+        description: product.description,
+        salesPrice: product.salesPrice,
+        createdAt: product.createdAt,
+        updatedAt: product.updatedAt,
+        orderId: null
+      }))
+    );
+
+    const order = new Order(orderProps);
     const checkoutRepository = new CheckoutRepository();
     await checkoutRepository.addOrder(order);
 
     const checkoutDb = await OrderModel.findOne({
-      where: { id: OrderProps.id.id },
-      include: [ClientModel, ProductModel],
-    });
+      where: { id: orderProps.id.id },
+      include: [OrderModel.associations.products, OrderModel.associations.client],
+    })
 
-    expect(OrderProps.id.id).toEqual(checkoutDb.id);
-    expect(OrderProps.client.id.id).toEqual(checkoutDb.client.id);
-    expect(OrderProps.client.name).toEqual(checkoutDb.client.name);
-    expect(OrderProps.client.email).toEqual(checkoutDb.client.email);
-    expect(OrderProps.client.document).toEqual(checkoutDb.client.document);
-    expect(OrderProps.client.street).toEqual(checkoutDb.client.street);
-    expect(OrderProps.client.number).toEqual(checkoutDb.client.number);
-    expect(OrderProps.client.complement).toEqual(checkoutDb.client.complement);
-    expect(OrderProps.client.city).toEqual(checkoutDb.client.city);
-    expect(OrderProps.client.state).toEqual(checkoutDb.client.state);
-    expect(OrderProps.client.zipCode).toEqual(checkoutDb.client.zipCode);
-    expect(OrderProps.products).toStrictEqual([
+    expect(orderProps.id.id).toEqual(checkoutDb.id);
+    expect(orderProps.client.id.id).toEqual(checkoutDb.client.id);
+    expect(orderProps.client.name).toEqual(checkoutDb.client.name);
+    expect(orderProps.client.email).toEqual(checkoutDb.client.email);
+    expect(orderProps.client.document).toEqual(checkoutDb.client.document);
+    expect(orderProps.client.street).toEqual(checkoutDb.client.street);
+    expect(orderProps.client.number).toEqual(checkoutDb.client.number);
+    expect(orderProps.client.complement).toEqual(checkoutDb.client.complement);
+    expect(orderProps.client.city).toEqual(checkoutDb.client.city);
+    expect(orderProps.client.state).toEqual(checkoutDb.client.state);
+    expect(orderProps.client.zipCode).toEqual(checkoutDb.client.zipCode);
+    expect(orderProps.products).toStrictEqual([
       new Product({
         id: new Id(checkoutDb.products[0].id),
         name: checkoutDb.products[0].name,
@@ -101,51 +132,83 @@ describe("CheckoutRepository test", () => {
         salesPrice: checkoutDb.products[1].salesPrice,
       }),
     ]);
-    expect(OrderProps.status).toEqual(checkoutDb.status);
+    expect(orderProps.status).toEqual(checkoutDb.status);
   });
 
   it("should find an order", async () => {
     const checkoutRepository = new CheckoutRepository();
 
+    const client = new Client({
+      id: new Id("C-1"),
+      name: "client name",
+      email: "test@domain.com",
+      document: "0000000",
+      street: "16 avenus",
+      number: "123",
+      complement: "Ap 400",
+      city: "My city",
+      state: "State",
+      zipCode: "89777310",
+    });
+
+    await ClientModel.create({
+      id: client.id.id,
+      name: client.name,
+      email: client.email,
+      document: client.document,
+      street: client.street,
+      number: client.number,
+      complement: client.complement,
+      city: client.city,
+      state: client.state,
+      zipCode: client.zipCode,
+      createdAt: client.createdAt,
+      updatedAt: client.updatedAt
+    })
+
+    const products = [
+      new Product({
+        id: new Id("P-1"),
+        name: "first product",
+        description: "first product description",
+        salesPrice: 10,
+      }),
+      new Product({
+        id: new Id("P-2"),
+        name: "second product",
+        description: "second product description",
+        salesPrice: 20,
+      })
+    ];
+
+    const orderProps = {
+      id: new Id("O-1"),
+      client: client,
+      products: products,
+      status: "status 1",
+    };
+    const order = new Order(orderProps);
+
     await OrderModel.create(
       {
-        id: "O-1",
-        client: new ClientModel({
-          id: "C-1",
-          name: "client name",
-          email: "test@domain.com",
-          document: "0000000",
-          street: "16 avenus",
-          number: "123",
-          complement: "Ap 400",
-          city: "My city",
-          state: "State",
-          zipCode: "89777310",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          orderId: "O-1",
-        }),
-        products: [
-          new ProductModel({
-            id: "P-1",
-            name: "first product",
-            description: "first product description",
-            salesPrice: 10,
-            orderId: "O-1",
-          }),
-          new ProductModel({
-            id: "P-2",
-            name: "second product",
-            description: "second product description",
-            salesPrice: 20,
-            orderId: "O-1",
-          }),
-        ],
-        status: "status 1",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      { include: [ClientModel, ProductModel] }
+        id: order.id.id,
+        clientId: order.client.id.id,
+        status: order.status,
+        createdAt: order.createdAt,
+        updatedAt: order.updatedAt,
+      }
+    );
+
+    await ProductModel.bulkCreate(
+      products.map(product => ({
+        id: product.id.id,
+        name: product.name,
+        description: product.description,
+        salesPrice: product.salesPrice,
+        createdAt: product.createdAt,
+        updatedAt: product.updatedAt,
+        orderId: order.id.id
+      }))
     );
 
     const checkout = await checkoutRepository.findOrder("O-1");
