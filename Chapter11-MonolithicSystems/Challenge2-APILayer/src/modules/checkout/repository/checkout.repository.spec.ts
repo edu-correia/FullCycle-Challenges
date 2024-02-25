@@ -37,9 +37,9 @@ describe("CheckoutRepository test", () => {
 
   it("should add an order", async () => {
     const OrderProps = {
-      id: new Id("1"),
+      id: new Id("O-1"),
       client: new Client({
-        id: new Id("1"),
+        id: new Id("C-1"),
         name: "client name",
         email: "test@domain.com",
         document: "0000000",
@@ -52,13 +52,13 @@ describe("CheckoutRepository test", () => {
       }),
       products: [
         new Product({
-          id: new Id("1"),
+          id: new Id("P-1"),
           name: "first product",
           description: "first product description",
           salesPrice: 10,
         }),
         new Product({
-          id: new Id("2"),
+          id: new Id("P-2"),
           name: "second product",
           description: "second product description",
           salesPrice: 20,
@@ -109,9 +109,9 @@ describe("CheckoutRepository test", () => {
 
     await OrderModel.create(
       {
-        id: "1",
+        id: "O-1",
         client: new ClientModel({
-          id: "1",
+          id: "C-1",
           name: "client name",
           email: "test@domain.com",
           document: "0000000",
@@ -123,22 +123,22 @@ describe("CheckoutRepository test", () => {
           zipCode: "89777310",
           createdAt: new Date(),
           updatedAt: new Date(),
-          orderId: "1",
+          orderId: "O-1",
         }),
         products: [
           new ProductModel({
-            id: "1",
+            id: "P-1",
             name: "first product",
             description: "first product description",
             salesPrice: 10,
-            orderId: "1",
+            orderId: "O-1",
           }),
           new ProductModel({
-            id: "2",
+            id: "P-2",
             name: "second product",
             description: "second product description",
             salesPrice: 20,
-            orderId: "1",
+            orderId: "O-1",
           }),
         ],
         status: "status 1",
@@ -148,9 +148,10 @@ describe("CheckoutRepository test", () => {
       { include: [ClientModel, ProductModel] }
     );
 
-    const checkout = await checkoutRepository.findOrder("1");
+    const checkout = await checkoutRepository.findOrder("O-1");
 
-    expect(checkout.id.id).toEqual("1");
+    expect(checkout.id.id).toEqual("O-1");
+    expect(checkout.client.id.id).toEqual("C-1");
     expect(checkout.client.name).toEqual("client name");
     expect(checkout.client.email).toEqual("test@domain.com");
     expect(checkout.client.document).toEqual("0000000");
@@ -162,13 +163,13 @@ describe("CheckoutRepository test", () => {
     expect(checkout.client.zipCode).toEqual("89777310");
     expect(checkout.products).toStrictEqual([
       new Product({
-        id: new Id("1"),
+        id: new Id("P-1"),
         name: "first product",
         description: "first product description",
         salesPrice: 10,
       }),
       new Product({
-        id: new Id("2"),
+        id: new Id("P-2"),
         name: "second product",
         description: "second product description",
         salesPrice: 20,

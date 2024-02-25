@@ -15,16 +15,16 @@ export default class GenerateInvoiceUseCase {
 
   async execute(input: GenerateInvoiceUseCaseInputDto): Promise<GenerateInvoiceUseCaseOutputDto> {
     const props = {
-      id: new Id(input.id) || new Id(),
+      id: new Id(),
       name: input.name,
       document: input.document,
       address: new Address(
-        input.address.street,
-        input.address.number,
-        input.address.complement,
-        input.address.city,
-        input.address.state,
-        input.address.zipCode,
+        input.street,
+        input.number,
+        input.complement,
+        input.city,
+        input.state,
+        input.zipCode,
       ),
       items: input.items.map((item) => new InvoiceItem({
         id: new Id(item.id),

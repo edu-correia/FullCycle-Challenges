@@ -391,14 +391,12 @@ describe("PlaceOrderUseCase unit test", () => {
         expect(mockInvoiceFacade.generate).toHaveBeenCalledWith({
           name: clientProps.name,
           document: clientProps.document,
-          address: new Address(
-            clientProps.address.street,
-            clientProps.address.number,
-            clientProps.address.complement,
-            clientProps.address.city,
-            clientProps.address.state,
-            clientProps.address.zipCode,
-          ),
+          street: clientProps.address.street,
+          number: clientProps.address.number,
+          complement: clientProps.address.complement,
+          city: clientProps.address.city,
+          state: clientProps.address.state,
+          zipCode: clientProps.address.zipCode,
           items: [
             {
               id: products["1"].id.id,

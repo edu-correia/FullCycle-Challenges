@@ -77,14 +77,12 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
         ? await this._invoiceFacade.generate({
             name: client.name,
             document: client.document,
-            address: new Address(
-              client.address.street,
-              client.address.number,
-              client.address.complement,
-              client.address.city,
-              client.address.state,
-              client.address.zipCode,
-            ),
+            street: client.address.street,
+            number: client.address.number,
+            complement: client.address.complement,
+            city: client.address.city,
+            state: client.address.state,
+            zipCode: client.address.zipCode,
             items: products.map((p) => {
               return {
                 id: p.id.id,

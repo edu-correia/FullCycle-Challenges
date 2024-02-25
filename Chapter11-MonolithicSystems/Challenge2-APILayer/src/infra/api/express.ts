@@ -10,12 +10,12 @@ import { checkoutRoute } from "./routes/checkout.route";
 import { ClientModel } from "../../modules/client-adm/repository/client.model";
 import { InvoiceModel } from "../../modules/invoice/repository/invoice.model";
 import { InvoiceItemModel } from "../../modules/invoice/repository/invoice_item.model";
-import { TransactionModel } from "../../modules/payment/repository/transaction.model";
+import TransactionModel from "../../modules/payment/repository/transaction.model";
 import { ProductModel as ProductAdmModel } from "../../modules/product-adm/repository/product.model";
-import { ProductModel as StoreProductModel } from "../../modules/store-catalog/repository/product.model";
-import { OrderModel } from "../../modules/checkout/repository/order.model";
-import { ProductModel } from "../../modules/checkout/repository/product.model";
-import { ClientModel as OrderClientModel } from "../../modules/checkout/repository/client.model";
+import { default as StoreProductModel } from "../../modules/store-catalog/repository/product.model";
+import OrderModel from "../../modules/checkout/repository/order.model";
+import ProductModel from "../../modules/checkout/repository/product.model";
+import { default as OrderClientModel } from "../../modules/checkout/repository/client.model";
 
 export const app: Express = express();
 app.use(express.json());
