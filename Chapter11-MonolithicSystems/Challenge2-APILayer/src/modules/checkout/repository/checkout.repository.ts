@@ -9,34 +9,30 @@ import ProductModel from "./product.model";
 
 export default class CheckoutRepository implements CheckoutGateway {
   async addOrder(order: Order): Promise<void> {
-    try {
-      await OrderModel.create(
-        {
-          id: order.id.id,
-          clientId: order.client.id.id,
-          status: order.status,
-          createdAt: order.createdAt,
-          updatedAt: order.updatedAt,
-        }
-      );
+    await OrderModel.create(
+      {
+        id: order.id.id,
+        clientId: order.client.id.id,
+        status: order.status,
+        createdAt: order.createdAt,
+        updatedAt: order.updatedAt,
+      }
+    );
 
-      const productsIds: string[] = order.products.map(product => product.id.id);
+    const productsIds: string[] = order.products.map(product => product.id.id);
 
-      await ProductModel.update(
-        {
-          orderId: order.id.id
-        },
-        {
-          where: {
-            id: {
-              [Op.or]: productsIds
-            }
+    await ProductModel.update(
+      {
+        orderId: order.id.id
+      },
+      {
+        where: {
+          id: {
+            [Op.or]: productsIds
           }
         }
-      );
-    } catch (error) {
-      console.log(error);
-    }
+      }
+    );
   }
 
   async findOrder(id: string): Promise<Order | null> {

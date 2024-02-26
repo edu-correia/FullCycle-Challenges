@@ -28,7 +28,6 @@ clientRoute.post("/", async (req: Request, res: Response) => {
 
     return res.status(201).json({ message: "Client registered succesfully!", result: output });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({ message: "Oops, something went wrong!", error: err });
   }
 });

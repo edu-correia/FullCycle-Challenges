@@ -75,7 +75,7 @@ describe("Client Repository test", () => {
       complement: "Casa Verde",
       city: "Criciúma",
       state: "SC",
-      zipcode: "88888-888",      
+      zipCode: "88888-888",      
       createdAt: new Date(),
       updatedAt: new Date()
     })

@@ -92,6 +92,7 @@ describe("CheckoutRepository test", () => {
         name: product.name,
         description: product.description,
         salesPrice: product.salesPrice,
+        stock: 10,
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
         orderId: null
@@ -205,6 +206,7 @@ describe("CheckoutRepository test", () => {
         name: product.name,
         description: product.description,
         salesPrice: product.salesPrice,
+        stock: 10,
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
         orderId: order.id.id
